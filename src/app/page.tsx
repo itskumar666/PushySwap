@@ -1,65 +1,187 @@
-import Image from "next/image";
+import SwapInterface from '@/components/SwapInterface';
+import WalletConnection from '@/components/WalletConnection';
+import { Github, ExternalLink } from 'lucide-react';
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-blue-900">
+      {/* Header */}
+      <header className="border-b border-gray-700 bg-gray-900/50 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">US</span>
+              </div>
+              <div>
+                <h1 className="text-xl font-bold text-white">Universal Swap</h1>
+                <p className="text-xs text-gray-400">Powered by Push Chain</p>
+              </div>
+            </div>
+            
+            <div className="flex items-center space-x-4">
+              <a
+                href="https://push.org"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                <ExternalLink className="w-5 h-5" />
+              </a>
+              <a
+                href="https://github.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                <Github className="w-5 h-5" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold text-white mb-4">
+            Swap Across All Chains
+          </h2>
+          <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+            Trade tokens from Ethereum, Solana, BSC, and more - all in one place. 
+            No bridges, no multiple wallets, just seamless cross-chain swapping.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        <div className="grid lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          {/* Wallet Connection */}
+          <div>
+            <WalletConnection />
+          </div>
+
+          {/* Swap Interface */}
+          <div>
+            <SwapInterface />
+          </div>
+        </div>
+
+        {/* DEX Integration Showcase */}
+        <div className="mt-16">
+          <h3 className="text-2xl font-bold text-white text-center mb-4">
+            Powered by Leading DEX Aggregators
+          </h3>
+          <p className="text-gray-300 text-center mb-8 max-w-2xl mx-auto">
+            Universal Swap integrates with the best DEXes across all chains to find you the optimal rates
+          </p>
+          
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
+            <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6 text-center">
+              <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <span className="text-white font-bold text-xs">1INCH</span>
+              </div>
+              <h4 className="text-lg font-semibold text-white mb-2">Ethereum DEXes</h4>
+              <p className="text-gray-400 text-sm">
+                Access Uniswap, SushiSwap, and 100+ Ethereum DEXes through 1inch aggregation
+              </p>
+            </div>
+
+            <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6 text-center">
+              <div className="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <span className="text-white font-bold text-xs">JUP</span>
+              </div>
+              <h4 className="text-lg font-semibold text-white mb-2">Solana DEXes</h4>
+              <p className="text-gray-400 text-sm">
+                Tap into Raydium, Orca, and Solana&apos;s entire DeFi ecosystem via Jupiter
+              </p>
+            </div>
+
+            <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6 text-center">
+              <div className="w-12 h-12 bg-yellow-500 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <span className="text-white font-bold text-xs">CAKE</span>
+              </div>
+              <h4 className="text-lg font-semibold text-white mb-2">BSC DEXes</h4>
+              <p className="text-gray-400 text-sm">
+                Connect to PancakeSwap, BiSwap, and all major BSC liquidity sources
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Features */}
+        <div className="mt-8">
+          <h3 className="text-2xl font-bold text-white text-center mb-8">
+            Why Universal Swap?
+          </h3>
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6 text-center">
+              <div className="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <span className="text-white font-bold">⚡</span>
+              </div>
+              <h4 className="text-lg font-semibold text-white mb-2">Best Rates</h4>
+              <p className="text-gray-400 text-sm">
+                Automatically finds the best rates across all major DEXes and chains
+              </p>
+            </div>
+
+            <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6 text-center">
+              <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <span className="text-white font-bold">∞</span>
+              </div>
+              <h4 className="text-lg font-semibold text-white mb-2">Universal Access</h4>
+              <p className="text-gray-400 text-sm">
+                One interface to access liquidity from Ethereum, Solana, BSC, and more
+              </p>
+            </div>
+
+            <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6 text-center">
+              <div className="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <span className="text-white font-bold">🔒</span>
+              </div>
+              <h4 className="text-lg font-semibold text-white mb-2">Push Chain Powered</h4>
+              <p className="text-gray-400 text-sm">
+                Built on Push Chain&apos;s universal infrastructure for seamless cross-chain operations
+              </p>
+            </div>
+          </div>
         </div>
       </main>
+
+      {/* Footer */}
+      <footer className="border-t border-gray-700 bg-gray-900/50 backdrop-blur-sm mt-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="text-center">
+            <p className="text-gray-400 text-sm">
+              Built for Project G.U.D Hackathon • Powered by Push Chain Donut Testnet
+            </p>
+            <div className="flex items-center justify-center space-x-6 mt-4">
+              <a
+                href="https://faucet.push.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
+              >
+                Get Testnet Tokens
+              </a>
+              <a
+                href="https://donut.push.network/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
+              >
+                Block Explorer
+              </a>
+              <a
+                href="https://pushchain.github.io/push-chain-website/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
+              >
+                Documentation
+              </a>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
