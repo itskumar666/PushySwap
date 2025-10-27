@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { ArrowDownUp, Settings, Info } from 'lucide-react';
 import { SwapService, SwapQuote, SwapParams } from '@/lib/swap';
 import { SUPPORTED_TOKENS, SupportedToken } from '@/lib/pushchain';
@@ -89,7 +89,7 @@ function TokenSelect({ selectedToken, onTokenSelect, excludeToken, label }: Toke
                   <div className="text-xs text-gray-400">{SUPPORTED_TOKENS[token].name}</div>
                 </div>
                 <div className="text-xs text-gray-500 capitalize">
-                  {SUPPORTED_TOKENS[token].originChain}
+                  {SUPPORTED_TOKENS[token].chain}
                 </div>
               </button>
             ))}
@@ -109,6 +109,8 @@ export default function SwapInterface() {
   const [loading, setLoading] = useState(false);
   const [slippage, setSlippage] = useState(1); // 1% default slippage
   const [showSettings, setShowSettings] = useState(false);
+  const [balance, setBalance] = useState<string>('0');
+  const [balanceWarning, setBalanceWarning] = useState<string>('');
 
   const swapService = SwapService.getInstance();
 
@@ -149,8 +151,56 @@ export default function SwapInterface() {
     setAmountOut(tempAmount);
   };
 
+  // Check balance when amount or token changes
+  const checkBalance = useCallback(async () => {
+    if (!tokenIn || !amountIn) {
+      setBalance('0');
+      setBalanceWarning('');
+      return;
+    }
+
+    try {
+      if (window.ethereum) {
+        const provider = new (await import('ethers')).BrowserProvider(window.ethereum);
+        const signer = await provider.getSigner();
+        const userBalance = await provider.getBalance(await signer.getAddress());
+        const balanceFormatted = (await import('ethers')).formatEther(userBalance);
+        setBalance(balanceFormatted);
+
+        // Check if balance is sufficient
+        const requiredAmount = parseFloat(amountIn);
+        const availableAmount = parseFloat(balanceFormatted);
+        
+        if (tokenIn === 'ETH') {
+          if (availableAmount < requiredAmount + 0.001) { // Add gas buffer
+            setBalanceWarning(`Insufficient ${tokenIn} balance! You have ${balanceFormatted} ${tokenIn}, need ${(requiredAmount + 0.001).toFixed(6)} ${tokenIn} (including gas)`);
+          } else {
+            setBalanceWarning('');
+          }
+        }
+      }
+    } catch (error) {
+      console.log('Balance check error:', error);
+      setBalance('0');
+      setBalanceWarning('');
+    }
+  }, [tokenIn, amountIn]);
+
+  // Check balance when inputs change
+  useEffect(() => {
+    checkBalance();
+  }, [tokenIn, amountIn, checkBalance]);
+
   const handleSwap = async () => {
     if (!tokenIn || !tokenOut || !amountIn || !quote) return;
+
+    // Show balance warning but allow user to continue
+    if (balanceWarning) {
+      const confirmSwap = confirm(`⚠️ ${balanceWarning}\n\nDo you want to proceed anyway? The transaction may fail if you have insufficient funds.`);
+      if (!confirmSwap) {
+        return;
+      }
+    }
 
     try {
       setLoading(true);
@@ -171,7 +221,14 @@ export default function SwapInterface() {
       if (txHash === 'DEMO_COMPLETE_NO_HASH' || txHash === 'NO_TRANSACTION_EXECUTED' || txHash === 'CONCEPT_DEMONSTRATION_COMPLETE') {
         alert('Technical demonstration completed! Check console for detailed logs. No transaction was executed.');
       } else if (txHash.startsWith('0x')) {
-        alert(`Real transaction executed! Transaction hash: ${txHash}`);
+        const explorerUrl = `https://scan.push.org/tx/${txHash}`;
+        alert(`✅ Swap Successful!\n\nTransaction Hash: ${txHash}\n\nView on Explorer: ${explorerUrl}`);
+        console.log('View transaction:', explorerUrl);
+        
+        // Open explorer in new tab
+        if (confirm('Would you like to view the transaction on Push Chain Explorer?')) {
+          window.open(explorerUrl, '_blank');
+        }
       } else {
         alert('Demonstration completed! Check console for technical details.');
       }
@@ -236,8 +293,23 @@ export default function SwapInterface() {
             placeholder="0.0"
             className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
           />
+          {tokenIn === 'ETH' && (
+            <div className="text-xs text-gray-400 mt-1">
+              Balance: {balance} {tokenIn}
+            </div>
+          )}
         </div>
       </div>
+
+      {/* Balance Warning */}
+      {balanceWarning && (
+        <div className="mb-4 p-3 bg-red-900/20 border border-red-600/50 rounded-lg">
+          <div className="flex items-center space-x-2">
+            <Info className="w-4 h-4 text-red-400" />
+            <span className="text-red-400 text-sm">{balanceWarning}</span>
+          </div>
+        </div>
+      )}
 
       {/* Swap Button */}
       <div className="flex justify-center mb-4">

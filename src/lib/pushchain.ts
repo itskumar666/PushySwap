@@ -8,6 +8,23 @@ export const PUSH_CHAIN_CONFIG = {
 // Push Chain client - Real implementation using ethers.js
 import { ethers } from 'ethers';
 
+// Token configuration types
+export interface TokenInfo {
+  symbol: string;
+  name: string;
+  logo: string;
+  chain: string;
+  category: 'popular' | 'testnet' | 'defi' | 'meme';
+  contractAddress?: string; // For testnet tokens
+  decimals?: number; // Token decimals
+}
+
+// Define supported token keys first to avoid circular reference
+export type SupportedToken = 
+  | 'PUSH' | 'ETH' | 'SOL' | 'BNB' | 'USDC' | 'USDT' | 'DAI' | 'UNI' | 'LINK' | 'AAVE' | 'RAY' | 'CAKE'
+  | 'DOT' | 'ADA' | 'AVAX' | 'DOGE' | 'SHIB' | 'COMP' | 'MKR' | 'SNX' | 'WBTC'
+  | 'pETH' | 'pSOL' | 'pUSDC' | 'pBNB';
+
 export const pushChainClient = {
   config: PUSH_CHAIN_CONFIG,
   
@@ -70,246 +87,249 @@ export const pushChainClient = {
   }
 };
 
-// Supported tokens for the Universal Swap
-export const SUPPORTED_TOKENS = {
-  // Native Chain Tokens
-  ETH: {
-    address: '0x0000000000000000000000000000000000000000',
-    symbol: 'ETH',
-    name: 'Ethereum',
-    decimals: 18,
-    originChain: 'ethereum',
-    logo: '🔷',
-  },
+// Supported tokens with their configurations
+export const SUPPORTED_TOKENS: Record<SupportedToken, TokenInfo> = {
   SOL: {
-    address: 'So11111111111111111111111111111111111111112',
+    contractAddress: 'So11111111111111111111111111111111111111112',
     symbol: 'SOL',
     name: 'Solana',
     decimals: 9,
-    originChain: 'solana',
+    chain: 'Solana',
+    category: 'popular',
     logo: '🌞',
   },
   BNB: {
-    address: '0x0000000000000000000000000000000000000000',
+    contractAddress: '0x0000000000000000000000000000000000000000',
     symbol: 'BNB',
     name: 'BNB',
     decimals: 18,
-    originChain: 'bsc',
+    chain: 'BSC',
+    category: 'popular',
     logo: '🟡',
   },
   
-  // Stablecoins
+  // Push Chain Native
+  PUSH: {
+    symbol: 'PUSH',
+    name: 'Push Chain',
+    logo: '💎',
+    chain: 'Push Chain',
+    category: 'popular',
+    decimals: 18,
+  },
+  ETH: {
+    symbol: 'ETH',
+    name: 'Ethereum',
+    logo: '🟢',
+    contractAddress: '0x0000000000000000000000000000000000000000',
+    chain: 'Ethereum',
+    category: 'popular',
+    decimals: 18,
+  },
   USDC: {
-    address: '0xA0b86a33E6417f2D2B0B7f2FeFcdF96F8E0d1Ff8',
     symbol: 'USDC',
     name: 'USD Coin',
+    logo: '💙',
+    contractAddress: '0xA0b86a33E6417f2D2B0B7f2FeFcdF96F8E0d1Ff8',
+    chain: 'Ethereum',
+    category: 'popular',
     decimals: 6,
-    originChain: 'ethereum',
-    logo: '💵',
   },
   USDT: {
-    address: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
     symbol: 'USDT',
     name: 'Tether USD',
+    logo: '�',
+    contractAddress: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+    chain: 'Ethereum',
+    category: 'popular',
     decimals: 6,
-    originChain: 'ethereum',
-    logo: '💰',
   },
   DAI: {
-    address: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
     symbol: 'DAI',
     name: 'Dai Stablecoin',
+    logo: '�',
+    contractAddress: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+    chain: 'Ethereum',
+    category: 'defi',
     decimals: 18,
-    originChain: 'ethereum',
-    logo: '🏦',
   },
 
   // Popular DeFi Tokens
   UNI: {
-    address: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
     symbol: 'UNI',
     name: 'Uniswap',
-    decimals: 18,
-    originChain: 'ethereum',
     logo: '🦄',
+    contractAddress: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
+    chain: 'Ethereum',
+    category: 'defi',
+    decimals: 18,
   },
   LINK: {
-    address: '0x514910771AF9Ca656af840dff83E8264EcF986CA',
     symbol: 'LINK',
     name: 'Chainlink',
-    decimals: 18,
-    originChain: 'ethereum',
     logo: '🔗',
+    contractAddress: '0x514910771AF9Ca656af840dff83E8264EcF986CA',
+    chain: 'Ethereum',
+    category: 'defi',
+    decimals: 18,
   },
   AAVE: {
-    address: '0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9',
     symbol: 'AAVE',
     name: 'Aave',
+    logo: '🟣',
+    contractAddress: '0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9',
+    chain: 'Ethereum',
+    category: 'defi',
     decimals: 18,
-    originChain: 'ethereum',
-    logo: '👻',
   },
 
-  // Solana Ecosystem Tokens
+  // DeFi tokens - Solana
   RAY: {
-    address: '4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R',
     symbol: 'RAY',
     name: 'Raydium',
-    decimals: 6,
-    originChain: 'solana',
     logo: '⚡',
-  },
-  SRM: {
-    address: 'SRMuApVNdxXokk5GT7XD5cUUgXMBCoAz2LHeuAoKWRt',
-    symbol: 'SRM',
-    name: 'Serum',
+    contractAddress: 'SRMuApVNdxXokk5GT7XD5cUUgXMBCoAz2LHeuAoKWRt',
+    chain: 'Solana',
+    category: 'defi',
     decimals: 6,
-    originChain: 'solana',
-    logo: '🧬',
   },
 
-  // BSC Ecosystem Tokens
+  // BSC tokens - DeFi
   CAKE: {
-    address: '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
     symbol: 'CAKE',
     name: 'PancakeSwap',
-    decimals: 18,
-    originChain: 'bsc',
     logo: '🥞',
-  },
-
-  // Layer 1 Blockchain Tokens
-  MATIC: {
-    address: '0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0',
-    symbol: 'MATIC',
-    name: 'Polygon',
+    contractAddress: '0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0',
+    chain: 'BSC',
+    category: 'defi',
     decimals: 18,
-    originChain: 'ethereum',
-    logo: '🟣',
   },
   DOT: {
-    address: '0x7083609fCE4d1d8Dc0C979AAb8c869Ea2C873402',
     symbol: 'DOT',
     name: 'Polkadot',
+    logo: '⚫',
+    contractAddress: '0x7083609fCE4d1d8Dc0C979AAb8c869Ea2C873402',
+    chain: 'BSC',
+    category: 'popular',
     decimals: 10,
-    originChain: 'ethereum',
-    logo: '🟡',
   },
   ADA: {
-    address: '0x3EE2200Efb3400fAbB9AacF31297cBdD1d435D47',
     symbol: 'ADA',
     name: 'Cardano',
-    decimals: 6,
-    originChain: 'ethereum',
     logo: '🔵',
+    contractAddress: '0x3EE2200Efb3400fAbB9AacF31297cBdD1d435D47',
+    chain: 'BSC',
+    category: 'popular',
+    decimals: 6,
   },
   AVAX: {
-    address: '0x1CE0c2827e2eF14D5C4f29a091d735A204794041',
     symbol: 'AVAX',
     name: 'Avalanche',
-    decimals: 18,
-    originChain: 'ethereum',
     logo: '🔺',
+    contractAddress: '0x1CE0c2827e2eF14D5C4f29a091d735A204794041',
+    chain: 'Avalanche',
+    category: 'popular',
+    decimals: 18,
   },
 
-  // Meme & Community Tokens
+  // Meme tokens
   DOGE: {
-    address: '0xbA2aE424d960c26247Dd6c32edC70B295c744C43',
     symbol: 'DOGE',
     name: 'Dogecoin',
-    decimals: 8,
-    originChain: 'ethereum',
     logo: '🐕',
+    contractAddress: '0xbA2aE424d960c26247Dd6c32edC70B295c744C43',
+    chain: 'BSC',
+    category: 'meme',
+    decimals: 8,
   },
   SHIB: {
-    address: '0x95aD61b0a150d79219dCF64E1E6Cc01f0B64C4cE',
     symbol: 'SHIB',
     name: 'Shiba Inu',
+    logo: '🦮',
+    contractAddress: '0x95aD61b0a150d79219dCF64E1E6Cc01f0B64C4cE',
+    chain: 'Ethereum',
+    category: 'meme',
     decimals: 18,
-    originChain: 'ethereum',
-    logo: '🐶',
   },
 
-  // Additional DeFi Tokens
+  // DeFi blue chips
   COMP: {
-    address: '0xc00e94Cb662C3520282E6f5717214004A7f26888',
     symbol: 'COMP',
     name: 'Compound',
-    decimals: 18,
-    originChain: 'ethereum',
     logo: '🏛️',
+    contractAddress: '0xc00e94Cb662C3520282E6f5717214004A7f26888',
+    chain: 'Ethereum',
+    category: 'defi',
+    decimals: 18,
   },
   MKR: {
-    address: '0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2',
     symbol: 'MKR',
     name: 'Maker',
+    logo: '🟢',
+    contractAddress: '0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2',
+    chain: 'Ethereum',
+    category: 'defi',
     decimals: 18,
-    originChain: 'ethereum',
-    logo: '🏗️',
   },
   SNX: {
-    address: '0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F',
     symbol: 'SNX',
     name: 'Synthetix',
+    logo: '⚪',
+    contractAddress: '0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F',
+    chain: 'Ethereum',
+    category: 'defi',
     decimals: 18,
-    originChain: 'ethereum',
-    logo: '⚡',
   },
 
-  // Cross-Chain & Bridge Tokens
+  // Bitcoin variants
   WBTC: {
-    address: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
     symbol: 'WBTC',
     name: 'Wrapped Bitcoin',
+    logo: '🟠',
+    contractAddress: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
+    chain: 'Ethereum',
+    category: 'popular',
     decimals: 8,
-    originChain: 'ethereum',
-    logo: '₿',
   },
-  ATOM: {
-    address: '0x8D983cb9388EaC77af0474fA441C4815500Cb7BB',
-    symbol: 'ATOM',
-    name: 'Cosmos',
-    decimals: 6,
-    originChain: 'ethereum',
-    logo: '⚛️',
-  },
-  
-  // Push Chain Wrapped Tokens (for demo)
+
+  // Push Chain Wrapped Tokens
   pETH: {
-    address: '0x...', // Push Chain wrapped ETH
     symbol: 'pETH',
     name: 'Push Ethereum',
-    decimals: 18,
-    originChain: 'pushchain',
     logo: '🔷',
+    chain: 'Push Chain',
+    category: 'popular',
+    decimals: 18,
   },
   pSOL: {
-    address: '0x...', // Push Chain wrapped SOL
     symbol: 'pSOL',
     name: 'Push Solana',
-    decimals: 9,
-    originChain: 'pushchain',
     logo: '🌞',
+    chain: 'Push Chain',
+    category: 'popular',
+    decimals: 9,
   },
   pUSDC: {
-    address: '0x...', // Push Chain wrapped USDC
     symbol: 'pUSDC',
     name: 'Push USDC',
-    decimals: 6,
-    originChain: 'pushchain',
     logo: '💵',
+    chain: 'Push Chain',
+    category: 'popular',
+    decimals: 6,
   },
   pBNB: {
-    address: '0x...', // Push Chain wrapped BNB
     symbol: 'pBNB',
     name: 'Push BNB',
-    decimals: 18,
-    originChain: 'pushchain',
     logo: '🟡',
+    chain: 'Push Chain',
+    category: 'popular',
+    decimals: 18,
   },
+
+  
 } as const;
 
-export type SupportedToken = keyof typeof SUPPORTED_TOKENS;
+// SupportedToken type is already defined above
 
 // Push Chain network configuration for multi-chain support
 export const SUPPORTED_CHAINS = {

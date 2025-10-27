@@ -105,12 +105,19 @@ export class PushChainUniversalSwap {
           console.log(`❌ Insufficient ${tokenIn} balance!`);
           console.log(`💰 You have: ${ethers.formatEther(gasBalance)} ${tokenIn}`);
           console.log(`💸 You need: ${ethers.formatEther(totalNeeded)} ${tokenIn} (including gas)`);
-          console.log('');
-          console.log('🎯 For Real Swap You Need:');
-          console.log(`• ${amountIn} ${tokenIn} for the swap`);
-          console.log('• ~0.001 PUSH for transaction gas fees');
-          console.log('• Connect to Push Chain testnet');
-          console.log('');
+          
+          // Show user-friendly error message
+          const errorMessage = `Insufficient ${tokenIn} Balance!\n\n` +
+            `You have: ${ethers.formatEther(gasBalance)} ${tokenIn}\n` +
+            `You need: ${ethers.formatEther(totalNeeded)} ${tokenIn}\n\n` +
+            `Required:\n` +
+            `• ${amountIn} ${tokenIn} for the swap\n` +
+            `• ~0.001 PUSH for gas fees\n\n` +
+            `Please get more ${tokenIn} tokens or reduce swap amount.`;
+          
+          // Show alert to user
+          alert(errorMessage);
+          
           throw new Error(`Insufficient ${tokenIn} balance for swap`);
         }
         
@@ -119,6 +126,21 @@ export class PushChainUniversalSwap {
         // For other tokens, we'd need to check token contract balance
         console.log(`ℹ️  Token balance check for ${tokenIn} would require token contract interaction`);
         console.log('💡 In production: This would check ERC-20 token balance');
+        
+        // For demo, show warning to user about other tokens
+        const warningMessage = `Token Balance Check\n\n` +
+          `For ${tokenIn} tokens, balance checking requires token contract interaction.\n\n` +
+          `In production, this would:\n` +
+          `• Check your ERC-20 token balance\n` +
+          `• Verify you have enough ${tokenIn} to swap\n` +
+          `• Show exact amounts available\n\n` +
+          `Proceeding with demonstration...`;
+        
+        if (confirm(warningMessage + '\n\nContinue with swap demonstration?')) {
+          console.log('User confirmed to continue with token balance demo');
+        } else {
+          throw new Error('User cancelled swap due to token balance uncertainty');
+        }
       }
       
       if (gasBalance < ethers.parseEther('0.001')) {
