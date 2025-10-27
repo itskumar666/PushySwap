@@ -59,15 +59,20 @@ export default function WalletConnection() {
           params: [accounts[0], 'latest'],
         });
 
-        // Convert balance from wei to ETH
-        const balanceInETH = parseInt(balance, 16) / Math.pow(10, 18);
+        // Convert balance from wei to ETH (more precise calculation)
+        const balanceInETH = parseFloat(balance) / Math.pow(10, 18);
+        
+        // Log for debugging
+        console.log('Raw balance (hex):', balance);
+        console.log('Balance in ETH:', balanceInETH);
+        console.log('Chain ID:', parseInt(chainId, 16));
 
         // Get chain name
         const chainName = getChainName(parseInt(chainId, 16));
 
         setWalletInfo({
           address: accounts[0],
-          balance: balanceInETH.toFixed(4),
+          balance: balanceInETH.toFixed(6), // More precision
           chainId: parseInt(chainId, 16),
           chainName,
         });
@@ -81,27 +86,13 @@ export default function WalletConnection() {
     }
   };
 
-  const switchToPushChain = async () => {
-    if (!window.ethereum) return;
-
-    try {
-      // Switch to Push Chain testnet (network already added)
-      await window.ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: '0xa455' }], // 42069 in hex
-      });
-    } catch (switchError) {
-      console.error('Failed to switch to Push Chain network:', switchError);
-    }
-  };
-
   const getChainName = (chainId: number): string => {
     const chainNames: { [key: number]: string } = {
       1: 'Ethereum Mainnet',
       5: 'Goerli Testnet',
       56: 'BNB Smart Chain',
       137: 'Polygon',
-      42069: 'Push Chain Donut',
+      42101: 'Push Chain Donut Testnet', // Correct chain ID
     };
     return chainNames[chainId] || `Chain ${chainId}`;
   };
@@ -167,26 +158,25 @@ export default function WalletConnection() {
           <div className="flex items-center justify-between">
             <span className="text-sm text-gray-300">Balance:</span>
             <span className="text-sm font-medium text-white">
-              {walletInfo.balance} {walletInfo.chainId === 42069 ? 'PC' : 'ETH'}
+              {walletInfo.balance} {walletInfo.chainId === 42101 ? 'PC' : 'ETH'}
             </span>
           </div>
         </div>
 
-        {walletInfo.chainId !== 42069 && (
-          <div className="mt-3 p-2 bg-yellow-900/20 border border-yellow-500/20 rounded">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
-                <span className="text-yellow-300 text-xs">
-                  Switch to Push Chain Donut for optimal experience
+        {walletInfo.chainId !== 42101 && (
+          <div className="mt-3 p-3 bg-blue-900/20 border border-blue-500/20 rounded">
+            <div className="flex items-start space-x-2">
+              <div className="w-2 h-2 bg-blue-400 rounded-full mt-1 flex-shrink-0"></div>
+              <div className="space-y-1">
+                <span className="text-blue-300 text-xs font-medium block">
+                  Add Push Chain Donut Testnet to MetaMask:
                 </span>
+                <div className="text-xs text-blue-200 space-y-1">
+                  <div>Chain ID: 42101</div>
+                  <div>RPC: https://evm.rpc-testnet-donut-node2.push.org/</div>
+                  <div>Symbol: PC</div>
+                </div>
               </div>
-              <button
-                onClick={switchToPushChain}
-                className="text-xs bg-yellow-600 hover:bg-yellow-700 text-white px-2 py-1 rounded transition-colors"
-              >
-                Switch
-              </button>
             </div>
           </div>
         )}

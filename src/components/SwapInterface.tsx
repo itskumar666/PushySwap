@@ -29,7 +29,7 @@ function TokenSelect({ selectedToken, onTokenSelect, excludeToken, label }: Toke
         {selectedToken ? (
           <div className="flex items-center space-x-3">
             <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
-              {selectedToken.slice(1, 3)}
+              {SUPPORTED_TOKENS[selectedToken].logo || selectedToken.slice(0, 2)}
             </div>
             <div>
               <div className="font-medium text-white">{SUPPORTED_TOKENS[selectedToken].symbol}</div>
@@ -43,25 +43,57 @@ function TokenSelect({ selectedToken, onTokenSelect, excludeToken, label }: Toke
       </button>
       
       {isOpen && (
-        <div className="absolute z-10 w-full mt-1 bg-gray-800 border border-gray-600 rounded-lg shadow-lg">
-          {availableTokens.map((token) => (
-            <button
-              key={token}
-              onClick={() => {
-                onTokenSelect(token);
-                setIsOpen(false);
-              }}
-              className="w-full px-4 py-3 text-left hover:bg-gray-700 transition-colors flex items-center space-x-3 first:rounded-t-lg last:rounded-b-lg"
-            >
-              <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                {token.slice(1, 3)}
-              </div>
-              <div>
-                <div className="font-medium text-white">{SUPPORTED_TOKENS[token].symbol}</div>
-                <div className="text-sm text-gray-400">{SUPPORTED_TOKENS[token].name}</div>
-              </div>
-            </button>
-          ))}
+        <div className="absolute z-10 w-full mt-1 bg-gray-800 border border-gray-600 rounded-lg shadow-lg max-h-80 overflow-y-auto">
+          {/* Popular Tokens Section */}
+          <div className="p-2 border-b border-gray-700">
+            <div className="text-xs text-gray-400 mb-2 px-2">Popular Tokens</div>
+            {['ETH', 'SOL', 'BNB', 'USDC', 'USDT', 'MATIC', 'AVAX', 'WBTC'].filter(token => 
+              (token as SupportedToken) !== excludeToken && availableTokens.includes(token as SupportedToken)
+            ).map((token) => (
+              <button
+                key={token}
+                onClick={() => {
+                  onTokenSelect(token as SupportedToken);
+                  setIsOpen(false);
+                }}
+                className="w-full px-4 py-2 text-left hover:bg-gray-700 transition-colors flex items-center space-x-3 rounded"
+              >
+                <div className="w-6 h-6 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center text-white font-bold text-xs">
+                  {SUPPORTED_TOKENS[token as SupportedToken].logo || token.slice(0, 2)}
+                </div>
+                <div>
+                  <div className="font-medium text-white text-sm">{SUPPORTED_TOKENS[token as SupportedToken].symbol}</div>
+                  <div className="text-xs text-gray-400">{SUPPORTED_TOKENS[token as SupportedToken].name}</div>
+                </div>
+              </button>
+            ))}
+          </div>
+
+          {/* All Tokens Section */}
+          <div className="p-2">
+            <div className="text-xs text-gray-400 mb-2 px-2">All Tokens</div>
+            {availableTokens.map((token) => (
+              <button
+                key={token}
+                onClick={() => {
+                  onTokenSelect(token);
+                  setIsOpen(false);
+                }}
+                className="w-full px-4 py-2 text-left hover:bg-gray-700 transition-colors flex items-center space-x-3 rounded"
+              >
+                <div className="w-6 h-6 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center text-white font-bold text-xs">
+                  {SUPPORTED_TOKENS[token].logo || token.slice(0, 2)}
+                </div>
+                <div className="flex-1">
+                  <div className="font-medium text-white text-sm">{SUPPORTED_TOKENS[token].symbol}</div>
+                  <div className="text-xs text-gray-400">{SUPPORTED_TOKENS[token].name}</div>
+                </div>
+                <div className="text-xs text-gray-500 capitalize">
+                  {SUPPORTED_TOKENS[token].originChain}
+                </div>
+              </button>
+            ))}
+          </div>
         </div>
       )}
     </div>
@@ -135,8 +167,14 @@ export default function SwapInterface() {
       const txHash = await swapService.executeSwap(swapParams);
       console.log('Swap executed:', txHash);
       
-      // Show success message or redirect to transaction page
-      alert(`Swap executed! Transaction hash: ${txHash}`);
+      // Show appropriate message based on result
+      if (txHash === 'DEMO_COMPLETE_NO_HASH' || txHash === 'NO_TRANSACTION_EXECUTED' || txHash === 'CONCEPT_DEMONSTRATION_COMPLETE') {
+        alert('Technical demonstration completed! Check console for detailed logs. No transaction was executed.');
+      } else if (txHash.startsWith('0x')) {
+        alert(`Real transaction executed! Transaction hash: ${txHash}`);
+      } else {
+        alert('Demonstration completed! Check console for technical details.');
+      }
     } catch (error) {
       console.error('Swap failed:', error);
       alert('Swap failed. Please try again.');

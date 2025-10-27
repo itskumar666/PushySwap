@@ -14,8 +14,8 @@ export default function Home() {
                 <span className="text-white font-bold text-sm">US</span>
               </div>
               <div>
-                <h1 className="text-xl font-bold text-white">Universal Swap</h1>
-                <p className="text-xs text-gray-400">Powered by Push Chain</p>
+                <h1 className="text-xl font-bold text-white">UniversalSwap</h1>
+                <p className="text-xs text-gray-400">Cross-Chain DEX Aggregator</p>
               </div>
             </div>
             

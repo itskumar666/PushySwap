@@ -1,0 +1,40 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/Users/ashutoshkumar/Desktop/ProjectGUD/contracts/UniversalSwap.sol": {
+      "lastModificationDate": 1761579457929,
+      "contentHash": "e2e200cb990a86496297e822e94fc1da",
+      "sourceName": "contracts/UniversalSwap.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.19"
+      ],
+      "artifacts": [
+        "UniversalSwap"
+      ]
+    }
+  }
+}
