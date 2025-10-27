@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "UniversalSwap - Cross-Chain DEX Aggregator",
+  title: "PushySwap - Universal DEX on Push Chain",
   description: "The ultimate cross-chain DEX aggregator built on Push Chain. Trade tokens across Ethereum, Solana, BSC, and more with the best prices.",
 };
 

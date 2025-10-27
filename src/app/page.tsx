@@ -11,11 +11,11 @@ export default function Home() {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-3">
               <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">US</span>
+                <span className="text-white font-bold text-sm">PS</span>
               </div>
               <div>
-                <h1 className="text-xl font-bold text-white">UniversalSwap</h1>
-                <p className="text-xs text-gray-400">Cross-Chain DEX Aggregator</p>
+                <h1 className="text-xl font-bold text-white">PushySwap</h1>
+                <p className="text-xs text-gray-400">Universal DEX on Push Chain</p>
               </div>
             </div>
             
@@ -71,7 +71,7 @@ export default function Home() {
             Powered by Leading DEX Aggregators
           </h3>
           <p className="text-gray-300 text-center mb-8 max-w-2xl mx-auto">
-            Universal Swap integrates with the best DEXes across all chains to find you the optimal rates
+            PushySwap integrates with the best DEXes across all chains to find you the optimal rates
           </p>
           
           <div className="grid md:grid-cols-3 gap-6 mb-12">
@@ -110,7 +110,7 @@ export default function Home() {
         {/* Features */}
         <div className="mt-8">
           <h3 className="text-2xl font-bold text-white text-center mb-8">
-            Why Universal Swap?
+            Why PushySwap?
           </h3>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6 text-center">

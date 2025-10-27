@@ -243,13 +243,13 @@ export default function SwapInterface() {
   return (
     <div className="max-w-md mx-auto bg-gray-900 rounded-2xl p-6 shadow-xl border border-gray-700">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-bold text-white">Universal Swap</h2>
+            <div className="flex items-center justify-between mb-6">
+        <h2 className="text-xl font-bold text-white">PushySwap</h2>
         <button
-          onClick={() => setShowSettings(!showSettings)}
-          className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+          onClick={onSettingsClick}
+          className="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 transition-colors"
         >
-          <Settings className="w-5 h-5 text-gray-400" />
+          <Settings className="w-5 h-5" />
         </button>
       </div>
 
