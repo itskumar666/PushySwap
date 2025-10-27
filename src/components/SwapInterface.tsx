@@ -246,7 +246,7 @@ export default function SwapInterface() {
             <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-bold text-white">PushySwap</h2>
         <button
-          onClick={onSettingsClick}
+          onClick={() => setShowSettings(!showSettings)}
           className="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 transition-colors"
         >
           <Settings className="w-5 h-5" />
