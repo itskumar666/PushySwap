@@ -497,9 +497,10 @@ export class SwapService {
       // Fallback to static prices if oracle fails
       const fallbackPrices: Partial<Record<SupportedToken, number>> = {
         ETH: 4151.79, SOL: 185.50, BNB: 595.20, USDC: 1.00, USDT: 0.999, DAI: 1.001,
-        UNI: 12.80, LINK: 18.45, AAVE: 152.30, MATIC: 1.15, AVAX: 42.30, DOT: 8.95,
-        ADA: 0.68, DOGE: 0.165, SHIB: 0.000028, WBTC: 98500.00, ATOM: 12.40,
-        RAY: 3.20, CAKE: 3.45, pETH: 4151.79, pSOL: 185.50, pUSDC: 1.00, pBNB: 595.20,
+        UNI: 12.80, LINK: 18.45, AAVE: 152.30, AVAX: 42.30, DOT: 8.95,
+        ADA: 0.68, DOGE: 0.165, SHIB: 0.000028, WBTC: 98500.00,
+        RAY: 3.20, CAKE: 3.45, COMP: 85.60, MKR: 2150.00, SNX: 3.85,
+        pETH: 4151.79, pSOL: 185.50, pUSDC: 1.00, pBNB: 595.20,
       };
       
       const tokenInPrice = fallbackPrices[tokenIn] || 1;
@@ -588,11 +589,9 @@ export class SwapService {
       SNX: 3.85,
       
       // Layer 1 tokens - Updated prices
-      MATIC: 1.15,
       AVAX: 42.30,
       DOT: 8.95,
       ADA: 0.68,
-      ATOM: 12.40,
       
       // Meme tokens
       DOGE: 0.165,
@@ -603,7 +602,6 @@ export class SwapService {
       
       // Ecosystem tokens
       RAY: 3.20,
-      SRM: 0.85,
       CAKE: 3.45,
       
       // Push Chain wrapped tokens (same as originals)
@@ -628,7 +626,6 @@ export class SwapService {
       UNI: 'uniswap',
       LINK: 'chainlink',
       AAVE: 'aave',
-      MATIC: 'matic-network',
       AVAX: 'avalanche-2',
       DOT: 'polkadot',
       ADA: 'cardano',
@@ -638,7 +635,6 @@ export class SwapService {
       MKR: 'maker',
       SNX: 'havven',
       WBTC: 'wrapped-bitcoin',
-      ATOM: 'cosmos',
       RAY: 'raydium',
       CAKE: 'pancakeswap-token',
       // Wrapped tokens use same price as originals
